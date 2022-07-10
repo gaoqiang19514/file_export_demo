@@ -8,6 +8,66 @@
   </head>
   <body>
     <h1>index.html</h1>
-    <a href="http://localhost:3000/export" download="456.jpg">http://localhost:3000/export</a>
+    <a href="http://localhost:3000/export">http://localhost:3000/export</a>
+
+    <button id="formpost">form post</button>
+
+    <button id="ajaxBtn">ajaxBtn</button>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+      function useLinkDownload(url, fileName) {
+        const link = document.createElement("a");
+
+        link.style.display = "none";
+        link.href = url;
+        link.download = fileName;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // navigator.msSaveBlob的实现
+      function saveBlob(blob, filename) {
+        const objectURL = URL.createObjectURL(blob);
+        useLinkDownload(objectURL, filename);
+        URL.revokeObjectURL(objectURL);
+      }
+
+      function useFormDownload(url, method = "get") {
+        const form = document.createElement("form");
+
+        form.action = url;
+        form.method = method;
+        form.style.display = "none";
+
+        document.body.appendChild(form);
+
+        form.submit();
+        form.remove();
+      }
+
+      document.getElementById("formpost").addEventListener("click", () => {
+        useFormDownload("/export", "post");
+      });
+
+      // 验证responseType
+      document.getElementById("ajaxBtn").addEventListener("click", () => {
+        axios({
+          method: "get",
+          url: "http://localhost:3000/note.text",
+          responseType: "blob",
+        })
+          .then(function (res) {
+            console.log('res', res)
+            saveBlob(res.data, "note.text");
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+    </script>
   </body>
 </html>

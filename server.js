@@ -11,10 +11,33 @@ const filename = path.resolve(
   "./public/泰国攀牙湾安达曼海的红树林4k风景壁纸_彼岸图网.jpg"
 );
 
+const note = path.resolve(__dirname, "./public/note.text");
+
 // 直接发送文件
 // res.sendFile(filename);
 
 app.get("/export", (req, res) => {
+  fs.readFile(note, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send(err);
+      return;
+    }
+
+    // res.writeHead(200, {
+    //   "Content-Type": "text/plain; charset=utf-8",
+    // });
+
+    res.writeHead(200, {
+      // "Content-Type": "image/jpg",
+      // "Content-disposition": "attachment;filename=note.text",
+    });
+    res.write(data);
+    res.end();
+  });
+});
+
+app.post("/export", (req, res) => {
   fs.readFile(filename, (err, data) => {
     if (err) {
       console.error(err);
@@ -26,6 +49,7 @@ app.get("/export", (req, res) => {
     // res.writeHead(200, {
     //   "Content-Type": "ima12ge/21",
     // });
+
     res.writeHead(200, {
       "Content-disposition": "attachment;filename=123.jpg",
     });
