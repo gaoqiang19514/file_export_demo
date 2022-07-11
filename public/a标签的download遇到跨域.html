@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .row {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      使用a标签
+      <a href="http://127.0.0.1:3000/jpg" download="test.jpg"
+        >接口返回的图片 a.download</a
+      >
+    </div>
+    <div class="row">
+      使用ajax
+      <button id="btn">下载图片</button>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const btn = document.getElementById("btn");
+
+      function useLinkDownload(url, fileName) {
+        const link = document.createElement("a");
+
+        link.style.display = "none";
+        link.href = url;
+        link.download = fileName;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      btn.addEventListener("click", () => {
+        axios({
+          method: "get",
+          url: "http://127.0.0.1:3000/jpg",
+          responseType: "blob",
+        }).then((res) => {
+          const objectURL = URL.createObjectURL(res.data);
+          useLinkDownload(objectURL, "test.jpg");
+          URL.revokeObjectURL(objectURL);
+        });
+      });
+    </script>
+  </body>
+</html>

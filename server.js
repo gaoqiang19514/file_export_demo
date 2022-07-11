@@ -2,57 +2,57 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const app = express();
+const nodexlsx = require("node-xlsx").default;
 const port = 3000;
 
 app.use(express.static("public"));
 
-const filename = path.resolve(
+const jpg = path.resolve(
   __dirname,
   "./public/泰国攀牙湾安达曼海的红树林4k风景壁纸_彼岸图网.jpg"
 );
+const text = path.resolve(__dirname, "./public/note.text");
+const xlsx = path.resolve(__dirname, "./public/变更申请表.xlsx");
+const docx = path.resolve(
+  __dirname,
+  "./public/“美丽深圳”微信公众号变更方案_20211222.docx"
+);
 
-const note = path.resolve(__dirname, "./public/note.text");
+const list = [
+  [1, 2, 3],
+  [true, false, null, "sheetjs"],
+  ["foo", "bar", new Date("2014-02-19T14:30Z"), "0.3"],
+  ["baz", null, "qux"],
+];
+//由于各列数据长度不同，可以设置一下列宽
+const options = {
+  sheetOptions: {
+    "!cols": [{ wch: 6 }, { wch: 7 }, { wch: 10 }, { wch: 20 }],
+  },
+};
+//生成表格
+var buffer = nodexlsx.build([{ name: "sheet1", data: list }], options);
 
-// 直接发送文件
-// res.sendFile(filename);
-
-app.get("/export", (req, res) => {
-  fs.readFile(note, (err, data) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send(err);
-      return;
-    }
-
-    // res.writeHead(200, {
-    //   "Content-Type": "text/plain; charset=utf-8",
-    // });
-
-    res.writeHead(200, {
-      // "Content-Type": "image/jpg",
-      // "Content-disposition": "attachment;filename=note.text",
-    });
-    res.write(data);
-    res.end();
-  });
+//设置跨域访问
+app.all("*", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  next();
 });
 
-app.post("/export", (req, res) => {
-  fs.readFile(filename, (err, data) => {
+app.get("/jpg", (req, res) => {
+  fs.readFile(jpg, (err, data) => {
     if (err) {
       console.error(err);
       res.status(500).send(err);
       return;
     }
 
-    // res.setHeader("Content-Type", "image/jpg");
-    // res.writeHead(200, {
-    //   "Content-Type": "ima12ge/21",
-    // });
-
     res.writeHead(200, {
-      "Content-disposition": "attachment;filename=123.jpg",
+      "Content-disposition": "attachment;filename=server.jpg",
     });
+
     res.write(data);
     res.end();
   });
@@ -64,8 +64,10 @@ app.listen(port, () => {
 
 // 问题
 // 1. 不确定文件类型，不指定content-type可行吗？
+// 可行
 
 // 2. setHeader和writeHead之间的差异是什么？
+// 功能是一样，不过writeHead的优先级高些
 
 // 结论
 // 1. 如果没有正确的指定content-type文件就无法正常的打开

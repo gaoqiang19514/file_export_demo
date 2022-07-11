@@ -5,18 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .row {
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
-    <h1>index.html</h1>
-    <a href="http://localhost:3000/export">http://localhost:3000/export</a>
+    <h1>文件导出示例</h1>
 
-    <button id="formpost">form post</button>
+    <div class="row">
+      <a href="/泰国攀牙湾安达曼海的红树林4k风景壁纸_彼岸图网.jpg" download="">http://localhost:3000/jpg</a>
+    </div>
 
-    <button id="ajaxBtn">ajaxBtn</button>
+    <div class="row">
+      <button id="xlsx">xlsx</button>
+      <a href="http://localhost:3000/xlsx" download="xlsx.xlsx"
+        >xlsx a.download</a
+      >
+    </div>
+
+    <div class="row">
+      <a href="http://127.0.0.1:3000/jpg" download="test.jpg">接口返回的图片 a.download</a>
+    </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
     <script>
+      const xlsx = document.getElementById("xlsx");
+
       function useLinkDownload(url, fileName) {
         const link = document.createElement("a");
 
@@ -36,35 +52,20 @@
         URL.revokeObjectURL(objectURL);
       }
 
-      function useFormDownload(url, method = "get") {
-        const form = document.createElement("form");
-
-        form.action = url;
-        form.method = method;
-        form.style.display = "none";
-
-        document.body.appendChild(form);
-
-        form.submit();
-        form.remove();
-      }
-
-      document.getElementById("formpost").addEventListener("click", () => {
-        useFormDownload("/export", "post");
-      });
-
       // 验证responseType
-      document.getElementById("ajaxBtn").addEventListener("click", () => {
+      xlsx.addEventListener("click", () => {
         axios({
           method: "get",
-          url: "http://localhost:3000/note.text",
-          responseType: "blob",
+          url: "/xlsx",
+          // responseType: "blob",
         })
-          .then(function (res) {
-            console.log('res', res)
-            saveBlob(res.data, "note.text");
+          .then((res) => {
+            const blob = new Blob([res.data], {
+              type: "text/xml",
+            });
+            saveBlob(blob, "xlsx.xlsx");
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
           });
       });
