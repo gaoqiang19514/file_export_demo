@@ -41,6 +41,12 @@ app.all("*", function (req, res, next) {
   next();
 });
 
+app.get("/blob", (req, res) => {
+  const GB = 1.8 * 1024 * 1024 * 1024;
+  res.write(new Uint8Array(GB));
+  res.end();
+});
+
 app.get("/jpg", (req, res) => {
   fs.readFile(jpg, (err, data) => {
     if (err) {

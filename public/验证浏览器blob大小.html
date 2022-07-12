@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .row {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">测试blob限制</button>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const btn = document.getElementById("btn");
+
+      function useLinkDownload(url, fileName) {
+        const link = document.createElement("a");
+
+        link.style.display = "none";
+        link.href = url;
+        link.download = fileName;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      const GB1 = 1 * 1024 * 1024 * 1024;
+      const GB2 = 0.9 * 1024 * 1024 * 1024;
+
+      var b = new Blob([new Uint8Array(GB1), new Uint8Array(GB2)]);
+      // var reader = new FileReader();
+
+      // reader.onload = function (event) {
+      //   console.log("got load event", event);
+      // };
+
+      // reader.onerror = function (event) {
+      //   console.log("got error", event);
+      // };
+      // reader.readAsArrayBuffer(b);
+
+      btn.addEventListener("click", () => {
+        const objectURL = URL.createObjectURL(b);
+        useLinkDownload(objectURL, "test.rar");
+        URL.revokeObjectURL(objectURL);
+      });
+    </script>
+  </body>
+</html>
