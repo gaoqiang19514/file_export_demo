@@ -9,13 +9,13 @@ app.use(express.static("public"));
 
 const jpg = path.resolve(
   __dirname,
-  "./public/泰国攀牙湾安达曼海的红树林4k风景壁纸_彼岸图网.jpg"
+  "./public/assets/泰国攀牙湾安达曼海的红树林4k风景壁纸_彼岸图网.jpg"
 );
-const text = path.resolve(__dirname, "./public/note.text");
-const xlsx = path.resolve(__dirname, "./public/变更申请表.xlsx");
+const text = path.resolve(__dirname, "./public/assets/note.text");
+const xlsx = path.resolve(__dirname, "./public/assets/变更申请表.xlsx");
 const docx = path.resolve(
   __dirname,
-  "./public/“美丽深圳”微信公众号变更方案_20211222.docx"
+  "./public/assets/“美丽深圳”微信公众号变更方案_20211222.docx"
 );
 
 const list = [
