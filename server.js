@@ -56,7 +56,8 @@ app.get("/jpg", (req, res) => {
     }
 
     res.writeHead(200, {
-      "Content-disposition": "attachment;filename=server.jpg",
+      "Content-Type": "application/octet-stream",
+      // "Content-disposition": "attachment;filename=server.jpg",
     });
 
     res.write(data);

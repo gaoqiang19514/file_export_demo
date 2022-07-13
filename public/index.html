@@ -15,7 +15,7 @@
     <h1>文件导出示例</h1>
 
     <div class="row">
-      <a href="/泰国攀牙湾安达曼海的红树林4k风景壁纸_彼岸图网.jpg" download="">http://localhost:3000/jpg</a>
+      <a  href="http://127.0.0.1:3000/jpg">图片.jpg</a>
     </div>
 
     <div class="row">
@@ -26,7 +26,9 @@
     </div>
 
     <div class="row">
-      <a href="http://127.0.0.1:3000/jpg" download="test.jpg">接口返回的图片 a.download</a>
+      <a href="http://127.0.0.1:3000/jpg" download="test.jpg"
+        >接口返回的图片 a.download</a
+      >
     </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -56,14 +58,15 @@
       xlsx.addEventListener("click", () => {
         axios({
           method: "get",
-          url: "/xlsx",
-          // responseType: "blob",
+          url: "/jpg",
+          responseType: "blob",
         })
           .then((res) => {
-            const blob = new Blob([res.data], {
-              type: "text/xml",
-            });
-            saveBlob(blob, "xlsx.xlsx");
+      
+
+            const objectURL = URL.createObjectURL(blog);
+            useLinkDownload(objectURL, "test.jpg");
+            URL.revokeObjectURL(objectURL);
           })
           .catch((error) => {
             console.log(error);

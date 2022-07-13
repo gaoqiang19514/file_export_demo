@@ -34,22 +34,22 @@
       const GB2 = 0.9 * 1024 * 1024 * 1024;
 
       var b = new Blob([new Uint8Array(GB1), new Uint8Array(GB2)]);
-      // var reader = new FileReader();
+      var reader = new FileReader();
 
-      // reader.onload = function (event) {
-      //   console.log("got load event", event);
-      // };
+      reader.onload = function (event) {
+        console.log("got load event", event);
+      };
 
-      // reader.onerror = function (event) {
-      //   console.log("got error", event);
-      // };
-      // reader.readAsArrayBuffer(b);
+      reader.onerror = function (event) {
+        console.log("got error", event);
+      };
+      reader.readAsArrayBuffer(b);
 
-      btn.addEventListener("click", () => {
-        const objectURL = URL.createObjectURL(b);
-        useLinkDownload(objectURL, "test.rar");
-        URL.revokeObjectURL(objectURL);
-      });
+      // btn.addEventListener("click", () => {
+      //   const objectURL = URL.createObjectURL(b);
+      //   useLinkDownload(objectURL, "test.rar");
+      //   URL.revokeObjectURL(objectURL);
+      // });
     </script>
   </body>
 </html>
